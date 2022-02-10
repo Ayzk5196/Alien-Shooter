@@ -6,6 +6,9 @@ class Base{
         this.bg = bg;
         this.alienGroup = [];
         this.bulletGroup = [];
+        this.alienVelocity=-5;
+        this.wave=1;
+        this.score=0;
     }
     controlPlayer(){
         if(keyDown('UP_ARROW') && this.player.y>50){
@@ -40,9 +43,14 @@ class Base{
             })
             }
         }
+        if(this.score%10 == 0){
+            this.alienVelocity+=5;
+        }
         if(frameCount%1000 == 0){
             this.createGuns();
         }
+        //setInterval(this.waveUp(),45000);
+        console.log(this.alienVelocity);
         drawSprites();
     }
     createGuns(){
@@ -53,8 +61,16 @@ class Base{
     }
     createAliens(){
         var alien = createSprite(width+10,random(100,height-100),40,40);
-        alien.velocityX=-5;
+        alien.velocityX=this.alienVelocity;
         alien.lifetime=400;
+        alien.addImage(alienImage);
         this.alienGroup.push(alien);
+    }
+    waveUp(){
+        textSize(50);
+        text('Wave Up',width/2-50,height/2);
+        this.alienGroup=[];
+        this.alienVelocity+=5;
+        this.wave++;
     }
 }
